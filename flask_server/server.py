@@ -37,21 +37,21 @@ def predict_sound():
             index+=1
         return features
     
-    def get_ans(ans):
+    def get_ans(ans, pct):
         answer = {}
         answer['answer'] = ans
         message = ''
-
+        
         #기능 1
         if(ans==1):
-            message = "siren"
+            message = "siren" + str(pct)
         # 기능 2
         if(ans==0):
-            message = "dog"
+            message = "dog" + str(pct)
         if(ans==2):
-            message = "baby"
+            message = "baby" + str(pct)
         else:
-            message = "doorbell"
+            message = "doorbell" + str(pct)
         answer['message'] = message
         return json.dumps(answer, ensure_ascii=False)
 
@@ -60,10 +60,16 @@ def predict_sound():
         X = X[0]
         X = X.reshape(1,193,1)
         y_pred = model.predict(X)
+        tmp_y_pred = y_pred
         y_pred = np.argmax(y_pred, axis=1)[0]
-        result = get_ans(int(y_pred))
-        print(result)
-        return result
+        if tmp_y_pred[0][y_pred] < 0.5:
+            print("소리가 발생하였으나 '아기울음소리','폭발음','사이렌','외침소리' 가 아닐 확률이 높습니다.")
+            result = "소리가 발생하였으나 '아기울음소리','폭발음','사이렌','외침소리' 가 아닐 확률이 높습니다."
+            return result
+        else:
+            result = get_ans(int(y_pred), tmp_y_pred[0][y_pred])
+            print(result)
+            return result
             
     
     config ={
@@ -80,7 +86,7 @@ def predict_sound():
     firebase = pyrebase.initialize_app(config)
     storage = firebase.storage()
 
-    path_on_cloud = "sounds/2021-05-09T06_46_58.655.wav"
+    path_on_cloud = "sounds/babycry236.wav"
     path_local = "sound.wav"
     storage.child(path_on_cloud).download(path_local)
     result = predict(path_local)
