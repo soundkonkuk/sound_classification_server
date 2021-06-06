@@ -65,7 +65,10 @@ def predict_sound():
         if tmp_y_pred[0][y_pred] < 0.5:
             print("소리가 발생하였으나 '아기울음소리','폭발음','사이렌','외침소리' 가 아닐 확률이 높습니다.")
             result = "소리가 발생하였으나 '아기울음소리','폭발음','사이렌','외침소리' 가 아닐 확률이 높습니다."
-            return result
+            answer = {}
+            answer['answer'] = "unknown"
+            answer['message'] = result
+            return json.dumps(answer, ensure_ascii=False)
         else:
             result = get_ans(int(y_pred), tmp_y_pred[0][y_pred])
             print(result)
