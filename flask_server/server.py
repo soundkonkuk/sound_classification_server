@@ -67,21 +67,21 @@ def predict_sound():
             
     
     config ={
-        "apiKey": "AIzaSyAC2dAIfDflF7Qft4tZbqfTl30Ln6B12nI",
-        "authDomain": "test-e4585.firebaseapp.com",
-        "databaseURL": "https://test-e4585-default-rtdb.firebaseio.com",
-        "projectId": "test-e4585",
-        "storageBucket": "test-e4585.appspot.com",
-        "messagingSenderId": "832943825026",
-        "appId": "1:832943825026:web:54f8b9385006d36d39949b",
-        "measurementId": "G-VHKBSKG1C4"
+        "apiKey" : "AIzaSyDZPPM4rCMlPnTf0ZNgaaMYisdrO9FFNq8",
+        "authDomain": "test-a9dcc.firebaseapp.com",
+        "databaseURL": "https://test-a9dcc-default-rtdb.firebaseio.com",
+        "projectId": "test-a9dcc",
+        "storageBucket": "test-a9dcc.appspot.com",
+        "messagingSenderId": "1066850164582",
+        "appId": "1:1066850164582:web:c7efd9b188d5ecfc5ab2a7",
+        "measurementId": "G-Q2RRZBDD3N"
     }
 
     firebase = pyrebase.initialize_app(config)
     storage = firebase.storage()
 
-    path_on_cloud = "images/babycry10.wav"
-    path_local = "babycry10.wav"
+    path_on_cloud = "sounds/2021-05-09T06_46_58.655.wav"
+    path_local = "sound.wav"
     storage.child(path_on_cloud).download(path_local)
     result = predict(path_local)
 
