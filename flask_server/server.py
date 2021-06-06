@@ -89,7 +89,7 @@ def predict_sound():
     firebase = pyrebase.initialize_app(config)
     storage = firebase.storage()
 
-    path_on_cloud = "sounds/babycry236.wav"
+    path_on_cloud = "sounds/sound.wav"
     path_local = "sound.wav"
     storage.child(path_on_cloud).download(path_local)
     result = predict(path_local)
