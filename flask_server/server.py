@@ -9,10 +9,11 @@ from keras.models import load_model
 import tensorflow as tf
 import json
 import pyrebase
+from moviepy.editor import AudioFileClip
 
 
 def predict_sound():
-    model = tf.keras.models.load_model('model2.h5')
+    model = tf.keras.models.load_model('newmodel.h5')
     def sound_feature(file_name):
         X, sample_rate = librosa.load(file_name)
         stft = np.abs(librosa.stft(X))
@@ -44,14 +45,14 @@ def predict_sound():
         
         #기능 1
         if(ans==1):
-            message = "siren" + str(pct)
+            message = "외침소리가 발생했어요!" + str(pct)
         # 기능 2
         if(ans==0):
-            message = "dog" + str(pct)
+            message = "아기울음소리가 발생했어요!" + str(pct)
         if(ans==2):
-            message = "baby" + str(pct)
+            message = "폭발음이 발생했어요!" + str(pct)
         else:
-            message = "doorbell" + str(pct)
+            message = "사이렌소리가 발생했어요!" + str(pct)
         answer['message'] = message
         return json.dumps(answer, ensure_ascii=False)
 
@@ -63,8 +64,8 @@ def predict_sound():
         tmp_y_pred = y_pred
         y_pred = np.argmax(y_pred, axis=1)[0]
         if tmp_y_pred[0][y_pred] < 0.5:
-            print("소리가 발생하였으나 '아기울음소리','폭발음','사이렌','외침소리' 가 아닐 확률이 높습니다.")
-            result = "소리가 발생하였으나 '아기울음소리','폭발음','사이렌','외침소리' 가 아닐 확률이 높습니다."
+            print("소리발생, 위험소리 50%미만")
+            result = "소리발생, 위험소리 50%미만"
             answer = {}
             answer['answer'] = "unknown"
             answer['message'] = result
@@ -89,10 +90,12 @@ def predict_sound():
     firebase = pyrebase.initialize_app(config)
     storage = firebase.storage()
 
-    path_on_cloud = "sounds/sound.wav"
-    path_local = "sound.wav"
+    path_on_cloud = "sounds/sound.mp4"
+    path_local = "sound.mp4"
     storage.child(path_on_cloud).download(path_local)
-    result = predict(path_local)
+    my_audio_clip = AudioFileClip(path_local)
+    my_audio_clip.write_audiofile("sound.wav")
+    result = predict("sound.wav")
 
     return result
             
