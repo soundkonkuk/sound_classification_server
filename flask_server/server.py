@@ -45,14 +45,14 @@ def predict_sound():
         
         #기능 1
         if(ans==1):
-            message = "외침소리가 발생했어요!" + str(pct)
+            message = "외침소리가 발생했어요!" + str(pct) + "%"
         # 기능 2
         if(ans==0):
-            message = "아기울음소리가 발생했어요!" + str(pct)
+            message = "아기울음소리가 발생했어요!" + str(pct) + "%"
         if(ans==2):
-            message = "폭발음이 발생했어요!" + str(pct)
-        else:
-            message = "사이렌소리가 발생했어요!" + str(pct)
+            message = "폭발음이 발생했어요!" + str(pct) + "%"
+        if(ans==3):
+            message = "사이렌소리가 발생했어요!" + str(pct) + "%"
         answer['message'] = message
         return json.dumps(answer, ensure_ascii=False)
 
